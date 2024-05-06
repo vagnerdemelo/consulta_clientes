@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .form-container {
+        position: relative;
+        width: 300px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    input[type="text"],
+    input[type="password"] {
+        width: calc(100% - 20px);
+        margin: 5px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    .back-btn {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: #ccc;
+        color: #333;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 12px;
+    }
+    .back-btn:hover {
+        background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <form method="post">
+      {{ form.csrf_token }}
+
+      <h2>Cadastro</h2>
+
+      {{ form.username.label() }}
+      {{ form.username() }}
+
+      {{ form.email.label() }}
+      {% if form.email.errors %}
+        {% for erro in form.email.errors %}
+          <p style="color: red">{{ erro }}</p>
+        {% endfor %}
+      {% endif %}
+      {{ form.email() }}
+
+      {{ form.password.label() }}
+      {{ form.password() }}
+
+      {{ form.confirm_password.label() }}
+      {{ form.confirm_password() }}
+
+      {{ form.token.label() }}
+      {{ form.token() }}
+
+      {{ form.submit() }}
+
+      <a href="{{ url_for('login') }}" class="back-btn">Voltar</a>
+    </form>
+  </div>
+</body>
+</html>

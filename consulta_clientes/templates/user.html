@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulta de clientes</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    input[type="text"] {
+        width: calc(100% - 20px);
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .logout-btn {
+        background-color: #ff5252;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    .logout-btn:hover {
+        background-color: #ff6e6e;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("form#consulta-form").submit(function(e){
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: "/processar_consulta",
+            type: "POST",
+            data: formData,
+            success: function(response){
+                $("#resultados").html(response);
+            }
+        });
+    });
+});
+</script>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <h1>Bem vindo {{ username }}</h1>
+      </div>
+      <form action="{{ url_for('logout') }}" method="get">
+        <button class="logout-btn">Sair</button>
+      </form>
+    </header>
+
+    <div class="container">
+    <h2>Consulta ao Banco de Dados</h2>
+    <form id="consulta-form">
+        <input type="text" name="termo_busca" placeholder="Digite o email para busca...">
+        <input type="submit" value="Buscar">
+        <br>
+        <input type="radio" id="buscar_todos" name="tipo_busca" value="todos">
+        <label for="buscar_todos">Buscar todos os dados da tabela</label><br>
+        <input type="radio" id="buscar_por_email" name="tipo_busca" value="email">
+        <label for="buscar_por_email">Buscar dados por email do cliente</label><br>
+    </form>
+    <div id="resultados"></div>
+</div>
+
+</body>
+</html>
